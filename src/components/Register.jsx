@@ -1,11 +1,30 @@
 import { FormControl, FormLabel } from "@chakra-ui/react";
 import React, {useState} from "react";
+import axios from 'axios';
 
 
 function Register({handleSubmit}){
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const client = axios.create({
+        baseURL: "http://localhost:8080"
+    });
+
+    const register = async (email, password) => {
+        setIsLoading(true);
+        try{
+            let response = await client.post('/public/signup',{
+                email: email,
+                password: password,
+            }
+            );
+        }catch(error){
+            console.log(error);
+        }
+        setIsLoading(false);
+    }
+
     return(
         <Flex width="full" align="center" justifyContent="center">
       <Box
