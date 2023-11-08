@@ -2,27 +2,33 @@ import { FormControl, FormLabel, Flex, Box, Heading, Input, Button, CircularProg
 import React, {useState} from "react";
 import axios from 'axios';
 import ErrorMessage from "./ErrorMessage";
+import Cookies from "universal-cookie";
 
 
-const Register = () => {
+const Login = () => {
+    const cookies = new Cookies();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [name, setName] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [error, SetError] = useState('');
     const client = axios.create({
         baseURL: "http://localhost:8080"
     });
 
-    const register = async () => {
+    const handleLogin = async () => {
         setIsLoading(true);
         try{
-            let response = await client.post('/public/signup',{
-                name: name,
+            let response = await client.post('/api/public/login',{
                 email: email,
                 password: password,
             }
             );
+            cookies.set("TOKEN", response.data.token,{
+              path: "/",
+            }   
+            );
+            window.location.href = "/profile";
+
         }catch(error){
             SetError(error);
             console.log(error);
@@ -44,18 +50,9 @@ const Register = () => {
               <Heading>Login</Heading>
             </Box>
             <Box my={4} textAlign="left">
-              <form onSubmit={register}>
+              <form onSubmit={handleLogin}>
                 {error && <ErrorMessage message={error} />}
                 <FormControl isRequired>
-                  <FormLabel>Nama</FormLabel>
-                  <Input
-                    type="text"
-                    placeholder="john doe"
-                    size="lg"
-                    onChange={event => setName(event.currentTarget.value)}
-                  />
-                </FormControl>
-                <FormControl isRequired mt={6}>
                   <FormLabel>Email</FormLabel>
                   <Input
                     type="email"
@@ -64,7 +61,7 @@ const Register = () => {
                     onChange={event => setEmail(event.currentTarget.value)}
                   />
                 </FormControl>
-                <FormControl isRequired mt={12}>
+                <FormControl isRequired mt={6}>
                   <FormLabel>Password</FormLabel>
                   <Input
                     type="password"
@@ -97,4 +94,4 @@ const Register = () => {
     </Flex>
     );
 }
-export default Register;
+export default Login;
