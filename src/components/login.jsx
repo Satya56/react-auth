@@ -3,10 +3,10 @@ import React, {useState} from "react";
 import axios from 'axios';
 import ErrorMessage from "./ErrorMessage";
 import Cookies from "universal-cookie";
-
+const cookies = new Cookies();
 
 const Login = () => {
-    const cookies = new Cookies();
+    
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isLoading, setIsLoading] = useState(false);
@@ -15,26 +15,38 @@ const Login = () => {
         baseURL: "http://localhost:8080"
     });
 
-    const handleLogin = async () => {
+    const handleLogin = (e) => {
         setIsLoading(true);
-        try{
-            let response = await client.post('/api/public/login',{
-                email: email,
-                password: password,
-            }
-            );
-            cookies.set("TOKEN", response.data.token,{
-              path: "/",
-            }   
-            );
+        
+        e.preventDefault();
+
+        //set configurations
+        const configuration = {
+          method: "post",
+          url: "http://localhost:8080/api/public/login",
+          data: {
+            email,
+            password,
+          }, 
+        };
+
+        //memanggil API
+        axios(configuration)
+          .then((result) => {
+            //set the cookie
+            cookies.set("TOKEN", result.data.token, {
+              path:"/",
+            });
             window.location.href = "/profile";
 
-        }catch(error){
-            SetError(error);
-            console.log(error);
-        }
-        setIsLoading(false);
+            setIsLoading(false);
+          })
+          .catch((error) => {
+            error = new Error();
+          })
     }
+
+    console.log(cookies);
 
     return(
         <Flex width="full" align="center" justifyContent="center">

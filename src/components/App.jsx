@@ -1,8 +1,5 @@
 import { useState } from 'react';
-import reactLogo from './assets/react.svg';
-import viteLogo from '/vite.svg';
-import {Switch, Route} from "react-router-dom";
-import './App.css';
+import {Routes, Route} from "react-router-dom";
 import {
   ThemeProvider,
   theme,
@@ -11,6 +8,7 @@ import {
 } from '@chakra-ui/react';
 import Login from './login';
 import Register from './Register';
+import Profile from './Profile';
 
 function App() {
   const [count, setCount] = useState(0)
@@ -19,11 +17,11 @@ function App() {
     <ThemeProvider theme={theme}>
       <ColorModeProvider>
         <CSSReset />
-        <Switch>
-          <Route exact path='/' Component={Login}/>
-          <Route exact path='/register' Component={Register}/>
-          <Route exact path='/profile' Component={Register}/>
-        </Switch>
+        <Routes>
+          <Route exact path='/' element={<Login/>}/>
+          <Route exact path='/register' element={<Register/>}/>
+          <Route exact path='/profile' element={<Profile/>}/>
+        </Routes>
       </ColorModeProvider>
 
     </ThemeProvider>

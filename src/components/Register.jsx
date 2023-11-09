@@ -14,20 +14,22 @@ const Register = () => {
         baseURL: "http://localhost:8080"
     });
 
-    const register = async () => {
-        setIsLoading(true);
+    const register = async () => { 
         try{
-            let response = await client.post('/public/signup',{
+          setIsLoading(true);
+            let response = await client.post('/api/public/signup',{
                 name: name,
                 email: email,
                 password: password,
             }
             );
+            console.log(response);
         }catch(error){
             SetError(error);
             console.log(error);
+            setIsLoading(false);
         }
-        setIsLoading(false);
+        setIsLoading(false)
     }
 
     return(
