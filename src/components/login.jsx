@@ -3,47 +3,59 @@ import React, {useState} from "react";
 import axios from 'axios';
 import ErrorMessage from "./ErrorMessage";
 import Cookies from "universal-cookie";
+import useAuth from "../hooks/useAuth";
+import { useLocation, useNavigate } from "react-router-dom";
 const cookies = new Cookies();
 
 const Login = () => {
+ //inisialisasi base url
+  const client = axios.create({
+    baseURL: "http://localhost:8080"
+});
     
+    const {setAuth} = useAuth();
+
+    const navigate = useNavigate();
+    const location = useLocation();
+    const from = location.state?.from?.pathname || "/profile";
+
+    const userRef = useRef();
+    const errRef = useRef();
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [error, SetError] = useState('');
-    const client = axios.create({
-        baseURL: "http://localhost:8080"
-    });
 
-    const handleLogin = (e) => {
+    useEffect(() => {
+      userRef.current.focus();
+    },[]);
+
+    useEffect(() => {
+      SetError('');
+    },[email, password]);
+
+    const handleLogin = async (e) => {
         setIsLoading(true);
         
         e.preventDefault();
 
-        //set configurations
-        const configuration = {
-          method: "post",
-          url: "http://localhost:8080/api/public/login",
-          data: {
-            email,
-            password,
-          }, 
-        };
-
-        //memanggil API
-        axios(configuration)
-          .then((result) => {
-            //set the cookie
-            cookies.set("TOKEN", result.data.token, {
-              path:"/",
-            });
-            window.location.href = "/profile";
-
-            setIsLoading(false);
-          })
-          .catch((error) => {
-            error = new Error();
-          })
+        try{
+          const response = await client.post('/api/public/login', 
+              JSON.stringify({email, password}),
+              {
+                headers: {'Content-Type':'application/json'},
+                withCredentials: true
+              }  
+          );
+          console.log(JSON.stringify(response?.data));
+          const accessToken = response?.data?.accessToken;
+          setAuth({email, password, accessToken});
+          setEmail('');
+          setPassword('');
+          navigate(from, {replace: true});
+        }
+        
     }
 
     console.log(cookies);
