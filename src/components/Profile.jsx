@@ -8,8 +8,6 @@ const cookies = new Cookies();
 const token = cookies.get("TOKEN");
 
 const Profile = () => {
-    
-
     //inisialisasi pesan ketika memanggil API
     const [message, setMessage] = useState([]);
 
