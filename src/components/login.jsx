@@ -55,6 +55,18 @@ const Login = () => {
           setPassword('');
           navigate(from, {replace: true});
         }
+        catch (err) {
+          if (!err?.response) {
+              SetError('No Server Response');
+          } else if (err.response?.status === 400) {
+              SetError('Missing Username or Password');
+          } else if (err.response?.status === 401) {
+              SetError('Unauthorized');
+          } else {
+              SetError('Login Failed');
+          }
+          errRef.current.focus();
+      } 
         
     }
 
