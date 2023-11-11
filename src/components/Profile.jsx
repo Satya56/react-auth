@@ -8,35 +8,36 @@ const cookies = new Cookies();
 const token = cookies.get("TOKEN");
 
 const Profile = () => {
+    
+
     //inisialisasi pesan ketika memanggil API
-    const [message, setMessage] = useState([]);
+    const [message, setMessage] = useState('');
 
     console.log(token);
-    const client = axios.create({
-        baseURL: "http://localhost:8080"
-    });
 
     //useEffect otomatis dieksekusi jika halaman sudah termuat
     useEffect(() => {
-        const fetchProfile = async () => {
-            try{
-                let response = await client.get('/api/protected/profile', {
-                    headers:{
-                        Authorization: `bearer ${token}`,
-                    },
-                });
-                setMessage(response.data);
-                console.log(token);
-            }
-            catch(error){
-                console.log(error);
-            }
-            
-        }
-        fetchProfile();
-        console.log(message);
-    },[message]);
-    console.log(message);
+        //inisialisasi kofigurasi untuk pemanggilan API
+        const configuration ={
+            method: "get",
+            url: "http://localhost:8080/api/protected/profile",
+            headers:{
+                Authorization: `Bearer ${token}`,
+            },
+        };
+
+        //Memanggil API
+        axios(configuration)
+            .then((result) => {
+                setMessage(result.data.message);
+                console.log(result);
+            })
+            .catch((error) => {
+                error = new Error();
+            });
+            console.log(message);
+    }, []);
+    
 
     //logout
     const logout = () =>{
