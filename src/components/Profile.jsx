@@ -8,10 +8,9 @@ const cookies = new Cookies();
 const token = cookies.get("TOKEN");
 
 const Profile = () => {
-    
-
     //inisialisasi pesan ketika memanggil API
     const [message, setMessage] = useState('');
+    const [res, setRes] = useState({});
 
     console.log(token);
 
@@ -34,9 +33,32 @@ const Profile = () => {
             })
             .catch((error) => {
                 error = new Error();
+                console.log(error);
             });
             console.log(message);
-    }, []);
+    },[]);
+
+    //inisialisasi kofigurasi untuk pemanggilan API
+    // const configuration ={
+    //     method: "get",
+    //     url: "http://localhost:8080/api/protected/profile",
+    //     headers:{
+    //         Authorization: `Bearer ${token}`,
+    //     },
+    // };
+
+    // //Memanggil API
+    // axios(configuration)
+    //     .then((result) => {
+    //         setMessage(result.data.message);
+    //         console.log(result);
+    //         setRes(result.data);
+    //     })
+    //     .catch((error) => {
+    //         error = new Error();
+    //     });
+    //     console.log(message);
+    // console.log(res);
     
 
     //logout
