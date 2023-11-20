@@ -3,6 +3,7 @@ import axios from "axios";
 import Cookies from "universal-cookie";
 import { Box, Button, SimpleGrid } from "@chakra-ui/react";
 import ProfileCard from "./ProfileCard";
+import withRouter from "./WithRouter";
 //Mendapatkan token dari login
 const cookies = new Cookies();
 const token = cookies.get("TOKEN");
@@ -16,6 +17,7 @@ const Profile = () => {
 
     //useEffect otomatis dieksekusi jika halaman sudah termuat
     useEffect(() => {
+        console.log("Starting useEffect");
         //inisialisasi kofigurasi untuk pemanggilan API
         const configuration ={
             method: "get",
@@ -29,6 +31,7 @@ const Profile = () => {
         axios(configuration)
             .then((result) => {
                 setMessage(result.data.message);
+                setRes(result.data);
                 console.log(result);
             })
             .catch((error) => {
@@ -72,9 +75,9 @@ const Profile = () => {
     return(
         <Box boxShadow="lg">
             <SimpleGrid spacing={4} templateColumns='repeat(auto-fill, minmax(200px, 1fr))'>
-                <ProfileCard name={result.data.name} email={result.data.email} onSignOut={logout}/>
+                <ProfileCard name={res.name} email={res.email} onSignOut={logout}/>
             </SimpleGrid>
         </Box>
     );
 }
-export default Profile;
+export default withRouter(Profile);

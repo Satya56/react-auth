@@ -43,7 +43,9 @@ const Login = () => {
           })
           .catch((error) => {
             error = new Error();
-          })
+            setIsLoading(false);
+          });
+          setIsLoading(false);
     }
 
     console.log(cookies);

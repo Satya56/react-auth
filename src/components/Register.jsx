@@ -5,6 +5,7 @@ import ErrorMessage from "./ErrorMessage";
 
 
 const Register = () => {
+  // Inisialisasi variabel dan setter variabel
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [name, setName] = useState('');
@@ -17,6 +18,7 @@ const Register = () => {
     const register = async () => { 
         try{
           setIsLoading(true);
+          //Mencoba mengirimkan data registrasi
             let response = await client.post('/api/public/signup',{
                 name: name,
                 email: email,
@@ -25,6 +27,7 @@ const Register = () => {
             );
             console.log(response);
         }catch(error){
+          //jika terjadi error, kode ini akan dieksekusi
             SetError(error);
             console.log(error);
             setIsLoading(false);

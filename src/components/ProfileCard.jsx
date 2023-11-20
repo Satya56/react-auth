@@ -3,6 +3,7 @@ import {Heading, Text, Card, CardHeader, CardBody, CardFooter} from '@chakra-ui/
 import SignOutButton from './SignOutButton';
 
 function ProfileCard({name, email, onSignOut}){
+    //Menampilkan Profil Pengguna
     return(
         <Card>
             <CardHeader>
