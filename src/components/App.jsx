@@ -9,6 +9,7 @@ import {
 import Login from './login';
 import Register from './Register';
 import Profile from './Profile';
+import ThemeToggler from './ThemeToggler';
 
 function App() {
   const [count, setCount] = useState(0)
@@ -17,6 +18,7 @@ function App() {
     <ThemeProvider theme={theme}>
       <ColorModeProvider>
         <CSSReset />
+        <ThemeToggler />
         <Routes>
           <Route exact path='/' element={<Login/>}/>
           <Route exact path='/register' element={<Register/>}/>

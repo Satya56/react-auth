@@ -21,7 +21,7 @@ const Profile = () => {
         //inisialisasi kofigurasi untuk pemanggilan API
         const configuration ={
             method: "get",
-            url: "http://localhost:8080/api/protected/profile",
+            url: "http://localhost/api/protected/profile",
             headers:{
                 Authorization: `Bearer ${token}`,
             },

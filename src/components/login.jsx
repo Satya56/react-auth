@@ -98,7 +98,7 @@ const Login = () => {
                       color="teal"
                     />
                   ) : (
-                    'Register'
+                    'Login'
                   )}
                 </Button>
               </form>
