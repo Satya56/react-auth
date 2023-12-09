@@ -8,7 +8,7 @@ export default function ThemeToggler() {
         <IconButton
           icon={colorMode === 'light' ? <MoonIcon />: <SunIcon />}
           onClick={toggleColorMode}
-          variant="ghost"
+          variant="outline"
         />
       </Box>
     );

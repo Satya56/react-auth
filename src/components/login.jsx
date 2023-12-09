@@ -85,8 +85,8 @@ const Login = () => {
                   />
                 </FormControl>
                 <Button
-                  variantColor="teal"
-                  variant="outline"
+                  variantcolor="teal"
+                  variant="solid"
                   type="submit"
                   width="full"
                   mt={4}

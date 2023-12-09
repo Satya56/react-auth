@@ -12,7 +12,6 @@ import Profile from './Profile';
 import ThemeToggler from './ThemeToggler';
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
     <ThemeProvider theme={theme}>

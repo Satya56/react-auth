@@ -1,5 +1,5 @@
 import { FormControl, FormLabel, Flex, Box, Heading, Input, Button, CircularProgress} from "@chakra-ui/react";
-import React, {useState} from "react";
+import {useState} from "react";
 import axios from 'axios';
 import ErrorMessage from "./ErrorMessage";
 
@@ -79,7 +79,7 @@ const Register = () => {
                   />
                 </FormControl>
                 <Button
-                  variantColor="teal"
+                  variantcolor="teal"
                   variant="outline"
                   type="submit"
                   width="full"
