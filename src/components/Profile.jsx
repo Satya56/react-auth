@@ -4,6 +4,7 @@ import Cookies from "universal-cookie";
 import { Box, Button, SimpleGrid } from "@chakra-ui/react";
 import ProfileCard from "./ProfileCard";
 import withRouter from "./WithRouter";
+import { API_AUTH_PROFILE } from "../constants";
 //Mendapatkan token dari login
 const cookies = new Cookies();
 const token = cookies.get("TOKEN");
@@ -21,7 +22,7 @@ const Profile = () => {
         //inisialisasi kofigurasi untuk pemanggilan API
         const configuration ={
             method: "get",
-            url: "http://localhost:8080/api/protected/profile",
+            url: API_AUTH_PROFILE ,
             headers:{
                 Authorization: `Bearer ${token}`,
             },
@@ -40,6 +41,7 @@ const Profile = () => {
             });
             console.log(message);
     },[]);
+    console.log(res);
 
     //inisialisasi kofigurasi untuk pemanggilan API
     // const configuration ={
@@ -75,7 +77,7 @@ const Profile = () => {
     return(
         <Box boxShadow="lg">
             <SimpleGrid spacing={4} templateColumns='repeat(auto-fill, minmax(200px, 1fr))'>
-                <ProfileCard name={res.name} email={res.email} onSignOut={logout}/>
+                <ProfileCard name={res.Name} email={res.Email} onSignOut={logout}/>
             </SimpleGrid>
         </Box>
     );
