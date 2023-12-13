@@ -37,10 +37,10 @@ const Login = () => {
         axios(configuration)
           .then((result) => {
             //set the cookie
-            cookies.set("TOKEN", result.data.token, {
+            cookies.set("TOKEN", result.data.refreshtoken, {
               path:"/",
             });
-            window.location.href = "/profile";
+            window.location.href = "/home";
 
             setIsLoading(false);
           })

@@ -82,4 +82,4 @@ const Profile = () => {
         </Box>
     );
 }
-export default withRouter(Profile);
+export default Profile;

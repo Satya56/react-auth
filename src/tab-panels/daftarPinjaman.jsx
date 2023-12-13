@@ -14,7 +14,7 @@ import Cookies from "universal-cookie";
 const cookies = new Cookies();
 const token = cookies.get("TOKEN");
 
-const daftarPinjaman = () => {
+const DaftarPinjaman = () => {
     //inisialisasi pesan ketika memanggil API
     const [message, setMessage] = useState('');
     const [res, setRes] = useState({});
@@ -35,7 +35,7 @@ const daftarPinjaman = () => {
         axios(configuration)
             .then((result) => {
                 setMessage(result.data.message);
-                setRes(result.data);
+                setRes(result.data.pinjaman);
                 console.log(result);
             })
             .catch((error) => {
@@ -82,4 +82,4 @@ const daftarPinjaman = () => {
     );
 }
 
-export default daftarPinjaman;
+export default DaftarPinjaman;
