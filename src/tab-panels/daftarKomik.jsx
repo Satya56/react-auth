@@ -2,50 +2,56 @@ import { useEffect, useState } from "react";
 import {
     Table,
     Thead,
-    Tbody,
     Tr,
     Th,
-    Td,
     TableCaption,
     TableContainer,
   } from '@chakra-ui/react';
 import axios from 'axios';
 import Cookies from "universal-cookie";
+import NavBar from "../navbar/Header";
+import { API_BASE_URL } from "../constants";
+import KomiksList from "./KomiksList";
+import withRouter from "../components/WithRouter";
+import CreateKomikModal from "../modals/CreateKomikModal";
 const cookies = new Cookies();
 const token = cookies.get("TOKEN");
 
-const daftarKomik = () => {
+const DaftarKomik = () => {
     //inisialisasi pesan ketika memanggil API
     const [message, setMessage] = useState('');
-    const [res, setRes] = useState({});
+    const [res, setRes] = useState([]);
+    const client = axios.create({
+        baseURL: API_BASE_URL,
+    });
 
     //useEffect otomatis dieksekusi jika halaman sudah termuat
     useEffect(() => {
         console.log("Starting useEffect");
         //inisialisasi kofigurasi untuk pemanggilan API
-        const configuration ={
-            method: "get",
-            url: "http://localhost:8080/api/protected/komik",
-            headers:{
-                Authorization: `Bearer ${token}`,
-            },
+        const fetchKomik = async () => {
+            try{
+                let response = await client.get('/api/protected/komik', {
+                    headers:{
+                        Authorization: `Bearer ${token}`,
+                    }
+                });
+                setRes(response.data.komik);
+                console.log(res);
+            } catch(error){
+                setMessage(error);
+                console.log(message);
+            }
         };
-
-        //Memanggil API
-        axios(configuration)
-            .then((result) => {
-                setMessage(result.data.message);
-                setRes(result.data);
-                console.log(result);
-            })
-            .catch((error) => {
-                error = new Error();
-                console.log(error);
-            });
-            console.log(message);
+        fetchKomik();
     },[]);
+    console.log(res);
+    console.log(token);
+    console.log(message);
 
     return(
+        <>
+        <NavBar />
         <TableContainer>
             <Table variant='simple'>
             <TableCaption>Daftar Komik</TableCaption>
@@ -60,27 +66,17 @@ const daftarKomik = () => {
                     <Th>
                         Penerbit
                     </Th>
+                    <Th>
+                        <CreateKomikModal />
+                    </Th>
                 </Tr>
             </Thead>
-            <Tbody>
-                {res.map((re) => (
-                    <Tr key={re.ID}>
-                        <Td>
-                            {re.Title}
-                        </Td>
-                        <Td>
-                            {re.Penulis}
-                        </Td>
-                        <Td>
-                            {re.Penerbit}
-                        </Td>
-                    </Tr>
-                ))}
-            </Tbody>
+            <KomiksList komiks={res} />
             </Table>
         </TableContainer>
+        </>
     );
 }
 
-export default daftarKomik;
+export default withRouter(DaftarKomik);
 

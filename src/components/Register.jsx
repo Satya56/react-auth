@@ -2,6 +2,7 @@ import { FormControl, FormLabel, Flex, Box, Heading, Input, Button, CircularProg
 import {useState} from "react";
 import axios from 'axios';
 import ErrorMessage from "./ErrorMessage";
+import { API_BASE_URL } from "../constants";
 
 
 const Register = () => {
@@ -12,7 +13,7 @@ const Register = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, SetError] = useState('');
     const client = axios.create({
-        baseURL: "http://localhost:8080"
+        baseURL: API_BASE_URL,
     });
 
     const register = async () => { 
@@ -20,12 +21,13 @@ const Register = () => {
           setIsLoading(true);
           //Mencoba mengirimkan data registrasi
             let response = await client.post('/api/public/signup',{
-                name: name,
+                nama: name,
                 email: email,
                 password: password,
             }
             );
             console.log(response);
+            window.location.href = "/";
         }catch(error){
           //jika terjadi error, kode ini akan dieksekusi
             SetError(error);

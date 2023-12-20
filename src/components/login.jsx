@@ -1,8 +1,11 @@
 import { FormControl, FormLabel, Flex, Box, Heading, Input, Button, CircularProgress} from "@chakra-ui/react";
-import React, {useState} from "react";
+import {Link as ReactRouterLink} from 'react-router-dom';
+import {Link as ChakraLink} from '@chakra-ui/react';
+import {useState} from "react";
 import axios from 'axios';
 import ErrorMessage from "./ErrorMessage";
 import Cookies from "universal-cookie";
+import { API_AUTH_LOGIN } from "../constants";
 const cookies = new Cookies();
 
 const Login = () => {
@@ -11,10 +14,6 @@ const Login = () => {
     const [password, setPassword] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [error, SetError] = useState('');
-    const client = axios.create({
-        baseURL: "http://localhost:8080"
-    });
-
     const handleLogin = (e) => {
         setIsLoading(true);
         
@@ -23,7 +22,7 @@ const Login = () => {
         //set configurations
         const configuration = {
           method: "post",
-          url: "http://localhost:8080/api/public/login",
+          url: API_AUTH_LOGIN,
           data: {
             email,
             password,
@@ -34,10 +33,10 @@ const Login = () => {
         axios(configuration)
           .then((result) => {
             //set the cookie
-            cookies.set("TOKEN", result.data.token, {
+            cookies.set("TOKEN", result.data.refreshtoken, {
               path:"/",
             });
-            window.location.href = "/profile";
+            window.location.href = "/home";
 
             setIsLoading(false);
           })
@@ -101,7 +100,20 @@ const Login = () => {
                     'Login'
                   )}
                 </Button>
+                
               </form>
+              <ChakraLink as={ReactRouterLink} to='/register'>
+              <Button
+                  variantcolor="teal"
+                  variant="solid"
+                  type="submit"
+                  width="full"
+                  mt={4}
+                >
+                  Register
+                </Button>
+              </ChakraLink>
+              
             </Box>
           </>
       </Box>
