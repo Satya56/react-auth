@@ -12,6 +12,7 @@ import Profile from './Profile';
 import ThemeToggler from './ThemeToggler';
 import Home from './Home';
 import DaftarKomik from '../tab-panels/DaftarKomik';
+import DaftarPinjaman from '../tab-panels/daftarPinjaman';
 
 function App() {
 
@@ -26,6 +27,7 @@ function App() {
           <Route exact path='/profile' element={<Profile/>}/>
           <Route exact path='/home' element={<Home />}/>
           <Route exact path='/komik' element={<DaftarKomik />}/>
+          <Route exact path='/pinjaman' element={<DaftarPinjaman />}/>
         </Routes>
       </ColorModeProvider>
 

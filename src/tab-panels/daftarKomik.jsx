@@ -13,16 +13,17 @@ import NavBar from "../navbar/Header";
 import { API_BASE_URL } from "../constants";
 import KomiksList from "./KomiksList";
 import withRouter from "../components/WithRouter";
+import CreateKomikModal from "../modals/CreateKomikModal";
 const cookies = new Cookies();
 const token = cookies.get("TOKEN");
 
 const DaftarKomik = () => {
     //inisialisasi pesan ketika memanggil API
     const [message, setMessage] = useState('');
-    const [res, setRes] = useState({});
+    const [res, setRes] = useState([]);
     const client = axios.create({
         baseURL: API_BASE_URL,
-    })
+    });
 
     //useEffect otomatis dieksekusi jika halaman sudah termuat
     useEffect(() => {
@@ -64,6 +65,9 @@ const DaftarKomik = () => {
                     </Th>
                     <Th>
                         Penerbit
+                    </Th>
+                    <Th>
+                        <CreateKomikModal />
                     </Th>
                 </Tr>
             </Thead>

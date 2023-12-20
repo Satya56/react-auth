@@ -11,13 +11,22 @@ import {
   } from '@chakra-ui/react';
 import axios from 'axios';
 import Cookies from "universal-cookie";
+import { API_GET_PINJAMAN, API_BASE_URL } from "../constants";
+import CreatePinjamanModal from "../modals/CreatePinjamanModal";
+import NavBar from "../navbar/Header";
 const cookies = new Cookies();
 const token = cookies.get("TOKEN");
 
 const DaftarPinjaman = () => {
     //inisialisasi pesan ketika memanggil API
     const [message, setMessage] = useState('');
-    const [res, setRes] = useState({});
+    const [profileId, setProfileId] = useState(0);
+    const [komikList, setKomikList] = useState([]);
+    const [res, setRes] = useState([]);
+    const [error, setError] = useState('');
+    const client = axios.create({
+        baseURL: API_BASE_URL,
+    });
 
     //useEffect otomatis dieksekusi jika halaman sudah termuat
     useEffect(() => {
@@ -25,7 +34,7 @@ const DaftarPinjaman = () => {
         //inisialisasi kofigurasi untuk pemanggilan API
         const configuration ={
             method: "get",
-            url: "http://localhost:8080/api/protected/pinjaman",
+            url: API_GET_PINJAMAN,
             headers:{
                 Authorization: `Bearer ${token}`,
             },
@@ -43,9 +52,43 @@ const DaftarPinjaman = () => {
                 console.log(error);
             });
             console.log(message);
+
+            const getKomik = async () =>{
+                try{
+                    let response = await client.get('/api/protected/komik', {
+                        headers:{
+                            Authorization: `Bearer ${token}`,
+                        },
+                    });
+                    setKomikList(response.data.komik);
+                    console.log(komikList);
+                } catch (error){
+                    setError(error);
+                    console.log(error);
+                }
+            }
+    
+            const getProfile = async () =>{
+                try{
+                    let response = await client.get('/api/protected/profile', {
+                        headers:{
+                            Authorization: `Bearer ${token}`,
+                        },
+                    });
+                    setProfileId(response.data.ID);
+                    console.log(profileId);
+                } catch (error){
+                    setError(error);
+                    console.log(error);
+                }
+            }
+            getKomik();
+            getProfile();
     },[]);
 
     return(
+        <>
+        <NavBar />
         <TableContainer>
             <Table variant='simple'>
             <TableCaption>Daftar Komik</TableCaption>
@@ -59,6 +102,9 @@ const DaftarPinjaman = () => {
                     </Th>
                     <Th>
                         Tanggal Pengembalian
+                    </Th>
+                    <Th>
+                        <CreatePinjamanModal profile={profileId} komiks={komikList} />
                     </Th>
                 </Tr>
             </Thead>
@@ -79,6 +125,7 @@ const DaftarPinjaman = () => {
             </Tbody>
             </Table>
         </TableContainer>
+        </>
     );
 }
 

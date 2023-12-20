@@ -1,7 +1,18 @@
 import React from "react";
 import { Link, Box, Flex, Text, Button, Stack } from "@chakra-ui/react";
-
+import Cookies from "universal-cookie";
+const cookies = new Cookies();
+const token = cookies.get("TOKEN");
 import Logo from "./Logo";
+import SignOutButton from "../components/SignOutButton";
+
+//logout
+const logout = () =>{
+  //Menghancurkan cookie
+  cookies.remove("TOKEN", {path: "/"});
+  //mengarahkan pengguna ke landing page
+  window.location.href = "/";
+}
 
 const NavBar = (props) => {
   const [isOpen, setIsOpen] = React.useState(false);
@@ -75,18 +86,9 @@ const MenuLinks = ({ isOpen }) => {
       >
         <MenuItem to="/home">Home</MenuItem>
         <MenuItem to="/komik">Komik </MenuItem>
-        <MenuItem to="/faetures">Pinjaman </MenuItem>
-        <MenuItem to="/pricing">Pricing </MenuItem>
-        <MenuItem to="/signup" isLast>
-          <Button
-            size="sm"
-            rounded="md"
-            _hover={{
-              bg: ["primary.100", "primary.100", "primary.600", "primary.600"]
-            }}
-          >
-            Create Account
-          </Button>
+        <MenuItem to="/pinjaman">Pinjaman </MenuItem>
+        <MenuItem to="/" isLast>
+          <SignOutButton onSignOut={logout}/>
         </MenuItem>
       </Stack>
     </Box>

@@ -14,10 +14,6 @@ const Login = () => {
     const [password, setPassword] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [error, SetError] = useState('');
-    const client = axios.create({
-        baseURL: "http://localhost:8080"
-    });
-
     const handleLogin = (e) => {
         setIsLoading(true);
         
